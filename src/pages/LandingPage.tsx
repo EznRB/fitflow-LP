@@ -1,347 +1,69 @@
-import React, { useRef } from 'react';
-import { motion } from 'motion/react';
-import { 
-  Dumbbell, AlertTriangle, XCircle, Target, CheckCircle2, ShieldAlert,
-  Database, Server, MonitorPlay, Zap, Lightbulb, 
-  ChevronRight, TrendingUp, Presentation, CheckSquare, Layers
-} from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowRight, ArrowUpRight, Dumbbell, Menu, X, Users, ClipboardList, CalendarCheck, CreditCard, Activity, BookOpen, Check, ChevronDown } from 'lucide-react';
+import '../landing.css';
 
+// Preview local aponta ao aplicativo real local; publicação usa a origem configurada.
+const appUrl = (import.meta.env.VITE_APP_URL || (import.meta.env.DEV ? 'http://127.0.0.1:3107/' : 'https://fit-flow-indol.vercel.app/')).replace(/\/?$/, '/');
+const features = [
+  { icon: Users, number: '01', name: 'Alunos e planos', text: 'Cadastro, vínculo com plano e situação da matrícula em um só lugar.' },
+  { icon: ClipboardList, number: '02', name: 'Fichas de treino', text: 'Exercícios, séries, repetições e orientações organizados por aluno.' },
+  { icon: Activity, number: '03', name: 'Histórico de cargas', text: 'Registros de execução para acompanhar o que foi realizado.' },
+  { icon: CalendarCheck, number: '04', name: 'Presença', text: 'Check-in diário e histórico de frequência preservado.' },
+  { icon: CreditCard, number: '05', name: 'Controle financeiro', text: 'Registro de mensalidades e visão dos pagamentos da academia.' },
+  { icon: BookOpen, number: '06', name: 'Nutrição e fundamentos', text: 'Estimativas explicáveis e referências científicas para consulta.' },
+];
+const journeys = [
+  { id: 'gestor', label: 'Para a gestão', title: 'Menos informação espalhada. Mais clareza na rotina.', text: 'Alunos, planos, presença e mensalidades conectados. Uma visão para organizar o atendimento e acompanhar a academia.', steps: ['Cadastre o aluno e vincule um plano', 'Consulte presença e situação da matrícula', 'Registre pagamentos e acompanhe relatórios'], icon: Users },
+  { id: 'aluno', label: 'Para o aluno', title: 'O treino e a evolução acompanham você.', text: 'Consulte a ficha, registre a execução e acompanhe seu histórico. As estimativas de nutrição mostram as contas e as hipóteses utilizadas.', steps: ['Consulte sua ficha de treino', 'Registre carga e repetições realizadas', 'Compare seu histórico e consulte fundamentos'], icon: Dumbbell },
+];
+
+/** Apresentação acadêmica com navegação real e estados honestos de implementação. */
 export default function LandingPage() {
-  const containerRef = useRef<HTMLDivElement>(null);
-
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [selectedJourney, setSelectedJourney] = useState('gestor');
+  const journey = journeys.find(item => item.id === selectedJourney)!;
   return (
-    <div ref={containerRef} className="min-h-screen bg-slate-950 text-slate-100 selection:bg-orange-500/30 font-sans overflow-x-hidden">
-      {/* Navbar */}
-      <nav className="fixed top-0 w-full z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
-              <Dumbbell className="text-white" size={24} />
-            </div>
-            <span className="text-xl font-black tracking-tighter text-white">FITFLOW <span className="text-orange-500">CARAGUÁ</span></span>
-          </div>
-          <a 
-            href="https://fit-flow-indol.vercel.app/" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-lg transition-all text-sm flex items-center gap-2"
-          >
-            Acessar App <ChevronRight size={16} />
-          </a>
+    <div className="fitflow-landing">
+      <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
+      <header className="lp-header">
+        <div className="lp-container lp-header-inner">
+          <a className="lp-brand" href="#inicio" aria-label="FitFlow Caraguá, início"><Dumbbell size={27} strokeWidth={1.7} aria-hidden="true"/><span>FITFLOW<small>CARAGUÁ</small></span></a>
+          <nav className={menuOpen ? 'lp-navigation is-open' : 'lp-navigation'} id="lp-mobile-navigation" aria-label="Navegação principal">
+            <a href="#produto" onClick={() => setMenuOpen(false)}>O produto</a><a href="#rotina" onClick={() => setMenuOpen(false)}>Como funciona</a><a href="#fundamentos" onClick={() => setMenuOpen(false)}>Fundamentos</a><a href="#projeto" onClick={() => setMenuOpen(false)}>O projeto</a>
+          </nav>
+          <div className="lp-header-actions"><a href={appUrl} className="lp-button lp-button-small">Acessar FitFlow <ArrowUpRight size={16} aria-hidden="true"/></a><button className="lp-menu-button" type="button" aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'} aria-expanded={menuOpen} aria-controls="lp-mobile-navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X size={22}/> : <Menu size={22}/>}</button></div>
         </div>
-      </nav>
-
-      {/* Main Content */}
-      <main className="pt-28 pb-20 max-w-5xl mx-auto px-4 space-y-24">
-
-        {/* Slide 1 - Capa */}
-        <motion.section 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          className="text-center py-20"
-        >
-          <div className="inline-block px-4 py-2 mb-6 text-sm font-bold tracking-wider text-orange-500 uppercase bg-orange-500/10 rounded-full">
-            Apresentação do Projeto
-          </div>
-          <h1 className="text-6xl md:text-8xl font-black tracking-tight text-white mb-6">
-            FITFLOW <br/><span className="text-orange-500">CARAGUÁ</span>
-          </h1>
-          <p className="text-2xl text-slate-300 font-medium mb-12">Sistema de Gestão de Academias</p>
-          <div className="text-slate-400 font-medium space-y-2 max-w-sm mx-auto bg-slate-900 border border-slate-800 p-6 rounded-2xl">
-            <p className="text-white font-bold text-lg">Enzo Marcelo Ribeiro Fermiano</p>
-            <p>Análise e Desenvolvimento de Sistemas</p>
-            <p>2026</p>
-          </div>
-        </motion.section>
-
-        {/* Slide 2 & 3 - Contexto e Problema */}
-        <section className="grid md:grid-cols-2 gap-8">
-          <div className="bg-slate-900 border border-slate-800 p-8 rounded-3xl group hover:border-orange-500/30 transition-colors">
-            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-              <Presentation className="text-orange-500" /> Introdução
-            </h2>
-            <p className="text-slate-400 mb-4">Atualmente, academias de pequeno porte ainda utilizam:</p>
-            <ul className="space-y-3 text-slate-300 mb-6">
-              <li className="flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-slate-600" /> Fichas de treino em papel</li>
-              <li className="flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-slate-600" /> Controle financeiro manual</li>
-              <li className="flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-slate-600" /> Registros informais</li>
-            </ul>
-            <p className="text-slate-400 mb-4">Isso gera:</p>
-            <div className="flex flex-wrap gap-3">
-              <span className="bg-red-500/10 text-red-500 px-3 py-1 rounded-full text-sm font-bold">Desorganização</span>
-              <span className="bg-red-500/10 text-red-500 px-3 py-1 rounded-full text-sm font-bold">Perda de dados</span>
-              <span className="bg-red-500/10 text-red-500 px-3 py-1 rounded-full text-sm font-bold">Dificuldade de controle</span>
-            </div>
-          </div>
-
-          <div className="bg-slate-900 border border-slate-800 p-8 rounded-3xl group hover:border-orange-500/30 transition-colors">
-            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-              <AlertTriangle className="text-red-500" /> O Problema
-            </h2>
-            <p className="text-slate-400 mb-6">Os principais problemas identificados são:</p>
-            <ul className="space-y-4">
-              {[
-                "Falta de controle de alunos",
-                "Treinos desatualizados ou perdidos",
-                "Inadimplência sem controle",
-                "Muito tempo gasto em tarefas manuais"
-              ].map((item, i) => (
-                <li key={i} className="flex items-start gap-3 bg-slate-950 p-4 rounded-xl border border-slate-800">
-                  <XCircle className="text-red-500 shrink-0" size={20} />
-                  <span className="text-slate-300 font-medium">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+      </header>
+      <main id="conteudo" tabIndex={-1}>
+        <section id="inicio" className="lp-container lp-hero">
+          <div className="lp-hero-copy"><p className="lp-eyebrow"><span/> GESTÃO DE ACADEMIAS & EVOLUÇÃO DO ALUNO</p><h1>Uma rotina<br/>mais forte.<br/><em>Em todos os sentidos.</em></h1><p className="lp-hero-description">Da organização da academia ao acompanhamento do treino. O FitFlow conecta gestão, fichas e histórico em uma experiência feita para o dia a dia.</p><div className="lp-hero-actions"><a href={appUrl} className="lp-button">Acessar o sistema <ArrowRight size={18} aria-hidden="true"/></a><a href="#rotina" className="lp-text-link">Conhecer os fluxos <ArrowDownIcon/></a></div><p className="lp-hero-note">Projeto acadêmico · Caraguatatuba, SP · 2026</p></div>
+          <figure className="lp-hero-image"><img src="/fitflow-hero-v2.png" alt="Ilustração de uma academia contemporânea com rack de musculação e iluminação natural" width="1254" height="1254" fetchPriority="high"/><figcaption><span>FITFLOW CARAGUÁ</span><strong>Organização para a academia.<br/>Continuidade para o aluno.</strong><small>Imagem ilustrativa gerada por IA</small></figcaption></figure>
         </section>
-
-        {/* Slide 4 & 5 - Objetivo e Solução */}
-        <section className="bg-slate-900 border border-slate-800 p-8 md:p-12 rounded-[3rem]">
-          <div className="grid md:grid-cols-2 gap-12">
-            <div>
-              <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
-                <Target className="text-orange-500" /> Objetivo
-              </h2>
-              <p className="text-slate-400 mb-6">Desenvolver um sistema web que:</p>
-              <ul className="space-y-4 text-slate-300">
-                <li className="flex items-center gap-3"><CheckCircle2 className="text-orange-500 flex-shrink-0" size={20}/> Centralize todas as informações</li>
-                <li className="flex items-center gap-3"><CheckCircle2 className="text-orange-500 flex-shrink-0" size={20}/> Automatize processos</li>
-                <li className="flex items-center gap-3"><CheckCircle2 className="text-orange-500 flex-shrink-0" size={20}/> Facilite o trabalho do instrutor</li>
-                <li className="flex items-center gap-3"><CheckCircle2 className="text-orange-500 flex-shrink-0" size={20}/> Melhore a experiência do aluno</li>
-              </ul>
-            </div>
-            <div>
-              <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
-                <Zap className="text-orange-500" /> Solução Proposta
-              </h2>
-              <p className="text-slate-400 mb-6">O FitFlow Caraguá será um sistema com:</p>
-              <div className="space-y-4">
-                <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800">
-                  <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2">👨‍💼 Perfil Administrador/Instrutor</h3>
-                  <p className="text-slate-400 text-sm">Controle total do sistema</p>
-                </div>
-                <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800">
-                  <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2">👤 Perfil Aluno</h3>
-                  <p className="text-slate-400 text-sm">Acesso ao treino e status da mensalidade</p>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="lp-product-strip"><div className="lp-container"><span>Uma plataforma, duas perspectivas.</span><span>Gestão da academia <ArrowRight size={14}/></span><span>Acompanhamento do aluno <ArrowRight size={14}/></span><a href="#fundamentos">Métodos transparentes <ArrowUpRight size={14}/></a></div></div>
+        <section id="produto" className="lp-container lp-section">
+          <div className="lp-section-heading"><p className="lp-eyebrow">01 / O PRODUTO</p><h2>O essencial da rotina.<br/><span>No mesmo lugar.</span></h2><p>Informações que antes ficavam em fichas, planilhas e registros separados passam a fazer parte do mesmo acompanhamento.</p></div>
+          <div className="lp-feature-grid">{features.map(({icon:Icon,...feature}) => <article className="lp-feature" key={feature.number}><div className="lp-feature-top"><span>{feature.number}</span><Icon size={23} strokeWidth={1.5} aria-hidden="true"/></div><h3>{feature.name}</h3><p>{feature.text}</p></article>)}</div>
         </section>
-
-        {/* Slide 6 & 7 - Funcionalidades e Regras */}
-        <section className="grid md:grid-cols-2 gap-8">
-          <div className="bg-slate-900 border border-slate-800 p-8 rounded-3xl group hover:border-orange-500/30 transition-colors">
-            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-              <Layers className="text-orange-500" /> Funcionalidades Principais
-            </h2>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                "Cadastro de alunos", "Cadastro de planos", "Gestão de treinos", 
-                "Registro de pagamentos", "Check-in diário", "Relatórios"
-              ].map((item, i) => (
-                <div key={i} className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-slate-300 font-medium text-center text-sm flex items-center justify-center">
-                  {item}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="bg-slate-900 border border-slate-800 p-8 rounded-3xl group hover:border-orange-500/30 transition-colors">
-            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-              <ShieldAlert className="text-orange-500" /> Regras de Negócio
-            </h2>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-4 bg-slate-950 p-4 rounded-xl border border-slate-800">
-                <span className="text-xl leading-none">⚠️</span>
-                <span className="text-slate-300 font-medium text-sm">Bloqueio de treino por inadimplência (+5 dias)</span>
-              </li>
-              <li className="flex items-start gap-4 bg-slate-950 p-4 rounded-xl border border-slate-800">
-                <span className="text-xl leading-none">📊</span>
-                <span className="text-slate-300 font-medium text-sm">Histórico de check-in não pode ser apagado</span>
-              </li>
-              <li className="flex items-start gap-4 bg-slate-950 p-4 rounded-xl border border-slate-800">
-                <span className="text-xl leading-none">🏋️</span>
-                <span className="text-slate-300 font-medium text-sm">Apenas o instrutor altera treinos</span>
-              </li>
-            </ul>
-          </div>
+        <section id="rotina" className="lp-journey-section"><div className="lp-container lp-section">
+          <div className="lp-section-heading"><p className="lp-eyebrow">02 / COMO FUNCIONA</p><h2>Dois lados da academia.<br/><span>Uma rotina conectada.</span></h2></div>
+          {/* Botões alternam conteúdo, sem fingir navegação ou registros persistidos. */}
+          <div className="lp-journey-tabs" role="group" aria-label="Escolher jornada">{journeys.map(item => <button key={item.id} type="button" aria-pressed={selectedJourney === item.id} onClick={() => setSelectedJourney(item.id)}>{item.label}<ArrowUpRight size={17} aria-hidden="true"/></button>)}</div>
+          <div className="lp-journey-content" aria-live="polite"><div><journey.icon size={34} strokeWidth={1.4} className="lp-journey-icon" aria-hidden="true"/><h3>{journey.title}</h3><p>{journey.text}</p><a className="lp-text-link" href={appUrl}>Conhecer o sistema <ArrowRight size={16}/></a></div><ol className="lp-steps">{journey.steps.map((step,i)=><li key={step}><span>0{i+1}</span><p>{step}</p><Check size={17} aria-hidden="true"/></li>)}</ol></div>
+        </div></section>
+        <section id="fundamentos" className="lp-container lp-section lp-science">
+          <div className="lp-section-heading"><p className="lp-eyebrow">03 / FUNDAMENTOS</p><h2>As contas aparecem.<br/><span>As fontes também.</span></h2><p>Uma estimativa precisa poder ser explicada. A área de nutrição apresenta equações publicadas, parâmetros editáveis e a distribuição dos macronutrientes.</p><a className="lp-text-link" href={appUrl+'laboratorio.html'}>Explorar nutrição e fundamentos <ArrowUpRight size={17}/></a></div>
+          <div className="lp-method-list"><article><span>01</span><div><h3>Equações identificadas</h3><p>Mifflin–St Jeor e Harris–Benedict revisada. Fórmula, unidades e hipóteses visíveis.</p></div></article><article><span>02</span><div><h3>Treino com contexto</h3><p>Divisão, execução e volume são discutidos com referências e limites de aplicação.</p></div></article><article><span>03</span><div><h3>IA para explicar</h3><p>Temas e fontes delimitados. Cálculos feitos por código; medidas corporais não são enviadas ao modelo.</p></div></article><p className="lp-method-note">Conteúdo educativo para adultos saudáveis. Estimativas e explicações não substituem avaliação individual; fichas exigem revisão do instrutor.</p></div>
         </section>
-
-        {/* Slide 8 & 9 - Tecnologias e Estrutura */}
-        <section className="bg-slate-900 border border-slate-800 p-8 md:p-12 rounded-[3rem]">
-          <div className="grid lg:grid-cols-2 gap-12">
-            <div>
-              <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
-                <MonitorPlay className="text-orange-500" /> Tecnologias
-              </h2>
-              <div className="space-y-4">
-                <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 flex flex-col items-start">
-                  <p className="text-xs text-orange-500 font-black uppercase tracking-widest mb-1">Frontend Web</p>
-                  <p className="text-lg font-bold text-white">HTML, CSS e JavaScript</p>
-                  <p className="text-sm text-slate-400 mt-1">Focado em funcionar bem no celular.</p>
-                </div>
-                <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 flex flex-col items-start">
-                  <p className="text-xs text-orange-500 font-black uppercase tracking-widest mb-1">Backend</p>
-                  <p className="text-lg font-bold text-white">Node.js com Express</p>
-                  <p className="text-sm text-slate-400 mt-1">API REST + Autenticação JWT</p>
-                </div>
-                <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 flex flex-col items-start">
-                  <p className="text-xs text-orange-500 font-black uppercase tracking-widest mb-1">Banco de Dados</p>
-                  <p className="text-lg font-bold text-white">MySQL</p>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
-                <Database className="text-orange-500" /> Estrutura do Sistema
-              </h2>
-              <p className="text-slate-400 mb-6">Principais entidades mapeadas no banco de dados:</p>
-              <div className="grid grid-cols-2 gap-4">
-                {['Usuários', 'Alunos', 'Planos', 'Treinos', 'Exercícios', 'Pagamentos'].map((entidade, i) => (
-                  <div key={i} className="flex items-center gap-3 bg-slate-950 p-4 rounded-xl border border-slate-800">
-                    <Server className="text-orange-500 shrink-0" size={18} />
-                    <span className="text-slate-200 font-bold">{entidade}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Slide 10 & 11 - Progresso e Próximos Passos */}
-        <section className="grid md:grid-cols-2 gap-8">
-          <div className="bg-slate-900 border border-slate-800 p-8 rounded-3xl">
-            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-              <TrendingUp className="text-orange-500" /> Progresso do Projeto
-            </h2>
-            <ul className="space-y-4 mb-8">
-              <li className="flex items-center gap-3 text-slate-300 font-medium bg-slate-950 p-3 rounded-xl border border-slate-800">
-                <CheckSquare className="text-green-500 shrink-0" /> Estrutura inicial concluída
-              </li>
-              <li className="flex items-center gap-3 text-slate-300 font-medium bg-slate-950 p-3 rounded-xl border border-slate-800">
-                <CheckSquare className="text-green-500 shrink-0" /> Banco de dados modelado
-              </li>
-              <li className="flex items-center gap-3 text-slate-300 font-medium bg-slate-950 p-3 rounded-xl border border-slate-800">
-                <CheckSquare className="text-green-500 shrink-0" /> Sistema de autenticação
-              </li>
-              <li className="flex items-center gap-3 text-slate-300 font-medium bg-slate-950 p-3 rounded-xl border border-slate-800">
-                <CheckSquare className="text-green-500 shrink-0" /> CRUD de alunos e planos
-              </li>
-              <li className="flex items-center gap-3 text-slate-300 font-medium bg-slate-950 p-3 rounded-xl border border-slate-800">
-                <span className="text-lg shrink-0">⚠️</span> Treinos em desenvolvimento
-              </li>
-            </ul>
-            <div className="bg-orange-500/10 p-4 rounded-xl border border-orange-500/20 flex items-center justify-between">
-              <span className="font-bold text-orange-500">Progresso Total</span>
-              <span className="text-orange-500 font-black text-2xl">~50%</span>
-            </div>
-          </div>
-          
-          <div className="bg-slate-900 border border-slate-800 p-8 rounded-3xl">
-            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-              <Target className="text-orange-500" /> Próximos Passos
-            </h2>
-            <div className="space-y-4">
-              {[
-                "Implementar pagamentos",
-                "Criar sistema de check-in",
-                "Desenvolver dashboard",
-                "Criar área do aluno",
-                "Implementar relatórios"
-              ].map((step, i) => (
-                <div key={i} className="bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-center gap-4 text-slate-300 font-medium">
-                  <span className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-sm font-bold text-slate-400 shrink-0">{i+1}</span>
-                  {step}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Slide 12 & 13 - Dificuldades e Soluções */}
-        <section className="grid md:grid-cols-2 gap-8">
-          <div className="bg-slate-900 border border-slate-800 p-8 rounded-3xl">
-            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-              <AlertTriangle className="text-orange-500" /> Dificuldades Encontradas
-            </h2>
-            <ul className="space-y-4 text-slate-300">
-              <li className="p-4 bg-slate-950 rounded-xl border border-slate-800 font-medium flex items-center gap-3">
-                <span className="w-2 h-2 rounded-full bg-slate-600 shrink-0" /> Definir escopo corretamente
-              </li>
-              <li className="p-4 bg-slate-950 rounded-xl border border-slate-800 font-medium flex items-center gap-3">
-                <span className="w-2 h-2 rounded-full bg-slate-600 shrink-0" /> Organizar todas as funcionalidades
-              </li>
-              <li className="p-4 bg-slate-950 rounded-xl border border-slate-800 font-medium flex items-center gap-3">
-                <span className="w-2 h-2 rounded-full bg-slate-600 shrink-0" /> Estimar tempo de desenvolvimento
-              </li>
-            </ul>
-          </div>
-
-          <div className="bg-slate-900 border border-slate-800 p-8 rounded-3xl">
-            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-              <Lightbulb className="text-orange-500" /> Soluções Adotadas
-            </h2>
-            <ul className="space-y-4 text-slate-300">
-              <li className="p-4 bg-slate-950 rounded-xl border border-slate-800 font-medium flex items-center gap-3 text-green-500/90">
-                <CheckCircle2 className="shrink-0" size={20} /> Foco em MVP
-              </li>
-              <li className="p-4 bg-slate-950 rounded-xl border border-slate-800 font-medium flex items-center gap-3 text-green-500/90">
-                <CheckCircle2 className="shrink-0" size={20} /> Priorização de funcionalidades essenciais
-              </li>
-              <li className="p-4 bg-slate-950 rounded-xl border border-slate-800 font-medium flex items-center gap-3 text-green-500/90">
-                <CheckCircle2 className="shrink-0" size={20} /> Desenvolvimento por etapas (tasks)
-              </li>
-            </ul>
-          </div>
-        </section>
-
-        {/* Slide 14 & 15 - Viabilidade e Conclusão */}
-        <section className="bg-slate-900 border border-slate-800 p-8 md:p-12 rounded-[3rem]">
-          <div className="grid md:grid-cols-2 gap-12">
-            <div>
-              <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
-                <TrendingUp className="text-orange-500" /> Viabilidade
-              </h2>
-              <ul className="space-y-4 text-slate-300 font-medium text-lg">
-                <li className="flex items-center gap-3 bg-slate-950 p-4 rounded-xl border border-slate-800"><span className="text-green-500 font-black">✔</span> Projeto viável</li>
-                <li className="flex items-center gap-3 bg-slate-950 p-4 rounded-xl border border-slate-800"><span className="text-green-500 font-black">✔</span> Aplicação real no mercado</li>
-                <li className="flex items-center gap-3 bg-slate-950 p-4 rounded-xl border border-slate-800"><span className="text-green-500 font-black">✔</span> Possibilidade de expansão futura</li>
-              </ul>
-            </div>
-            <div>
-              <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
-                <Target className="text-orange-500" /> Conclusão
-              </h2>
-              <p className="text-slate-400 mb-6 font-medium">O FitFlow Caraguá:</p>
-              <ul className="space-y-4 text-slate-300 font-medium">
-                <li className="flex items-center gap-3 bg-slate-950 p-4 rounded-xl border border-slate-800"><ChevronRight className="text-orange-500 shrink-0"/> resolve problemas reais</li>
-                <li className="flex items-center gap-3 bg-slate-950 p-4 rounded-xl border border-slate-800"><ChevronRight className="text-orange-500 shrink-0"/> melhora a gestão da academia</li>
-                <li className="flex items-center gap-3 bg-slate-950 p-4 rounded-xl border border-slate-800"><ChevronRight className="text-orange-500 shrink-0"/> reduz erros e retrabalho</li>
-                <li className="flex items-center gap-3 bg-slate-950 p-4 rounded-xl border border-slate-800"><ChevronRight className="text-orange-500 shrink-0"/> aumenta a eficiência operacional</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* Slide 16 - Encerramento */}
-        <section className="text-center py-20 border-t border-slate-800">
-          <h2 className="text-5xl font-black text-white mb-6">Obrigado pela atenção!</h2>
-          <div className="flex justify-center mb-8">
-            <Dumbbell size={64} className="text-orange-500" />
-          </div>
-          <a 
-            href="https://fit-flow-indol.vercel.app/" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-black rounded-xl transition-all shadow-xl shadow-orange-500/20 text-lg uppercase tracking-wider"
-          >
-            Acessar Sistema <ChevronRight size={24} />
-          </a>
-        </section>
-
+        <section id="projeto" className="lp-project-section"><div className="lp-container lp-section">
+          <div className="lp-project-heading"><div><p className="lp-eyebrow">04 / O PROJETO</p><h2>Construído para aprender.<br/><span>Pensado para funcionar.</span></h2></div><span className="lp-stage">Em desenvolvimento e validação</span></div>
+          <div className="lp-project-grid"><article><h3>Arquitetura</h3><p>Aplicativo web em HTML, CSS e JavaScript, API Express e PostgreSQL no Neon com Prisma. A landing usa React e Vite.</p><div className="lp-tech">JavaScript <span>/</span> Node.js <span>/</span> Express <span>/</span> Prisma</div></article><article><h3>Estado da entrega</h3><p>Gestão, sessões, histórico de cargas e nutrição foram verificados com dados demonstrativos. O aplicativo está publicado na Vercel com PostgreSQL no Neon; login dos três perfis e persistência foram confirmados. A validação de IA, pagamentos e uso em telefone físico continua.</p><details><summary>Consultar próximos passos <ChevronDown size={15}/></summary><ul><li>Validar instalação e sincronização em telefone físico.</li><li>Configurar contas de teste para Pix/cartão e webhook.</li><li>Validar a IA educativa com chave e quota próprias.</li></ul></details></article></div>
+          <div className="lp-project-links"><a href="https://github.com/EznRB/FitFlow" target="_blank" rel="noopener noreferrer">Código do sistema <ArrowUpRight size={16}/></a><a href="https://github.com/EznRB/fitflow-LP" target="_blank" rel="noopener noreferrer">Código da apresentação <ArrowUpRight size={16}/></a></div>
+        </div></section>
+        <section className="lp-container lp-final"><div><p className="lp-eyebrow">FITFLOW CARAGUÁ</p><h2>A próxima etapa<br/>começa na rotina.</h2></div><a href={appUrl} className="lp-button">Conhecer o FitFlow <ArrowUpRight size={18}/></a></section>
       </main>
+      <footer className="lp-footer lp-container"><a className="lp-brand" href="#inicio"><Dumbbell size={23} aria-hidden="true"/><span>FITFLOW<small>CARAGUÁ</small></span></a><div><strong>Enzo Marcelo Ribeiro Fermiano</strong><p>Análise e Desenvolvimento de Sistemas · 2026</p></div><span>Caraguatatuba, SP</span></footer>
     </div>
   );
 }
+// Reutiliza o ícone da biblioteca sem criar um desenho decorativo próprio.
+function ArrowDownIcon() { return <ChevronDown size={16} aria-hidden="true"/>; }
