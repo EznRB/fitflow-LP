@@ -33,7 +33,7 @@ Código `754b27f` (`754b27f60cb9eb3886410ddc89970b64a16cee7a`), Production READY
 
 Navegador público confirmou hero e fundamentos; em 375 × 812, documento de 360 pixels, CTA mobile para o aplicativo canônico, Escape fechando menu e retornando foco ao botão. Captura real carregada e identificada como demonstração. [Hero publicado](docs/evidence/98-landing-vercel.jpg), [fundamentos publicados](docs/evidence/100-landing-fundamentos-vercel.jpg) e [apresentação mobile publicada](docs/evidence/101-landing-produto-mobile-vercel.jpg). Os nomes JPEG refletem os bytes da captura. Não certifica toda acessibilidade nem aparelho físico.
 
-PR [#1](https://github.com/EznRB/fitflow-LP/pull/1) permanece draft; a branch principal não foi mesclada. A pesquisa/revisão de UX completa do sistema e os gates de telefone e pagamentos continuam em andamento.
+Em 12/10, o PR [#1](https://github.com/EznRB/fitflow-LP/pull/1) permanecia draft. Em 15/10 ele foi revisado, marcado como pronto e integrado à main, sem force-push. A pesquisa/revisão de UX completa do sistema e os gates de telefone e pagamentos continuam em andamento.
 
 ## Verificação contínua
 
@@ -63,3 +63,11 @@ vercel promote <url-do-deployment-verificado> --scope eznrbs-projects --yes --no
 `VITE_APP_URL` deve ser uma URL HTTPS absoluta, sem credenciais, query ou fragmento. Um prefixo de caminho é permitido; o laboratório é resolvido como `laboratorio.html` dentro dessa base. HTTP é aceito somente em loopback no desenvolvimento. Configuração inválida interrompe o build sem imprimir o valor configurado. Isso corrige a concatenação que podia transformar o caminho do laboratório em parte de uma query ou fragmento.
 
 `npm test` verifica cinco cenários de destino, incluindo configuração inválida e isolamento do padrão de produção; o workflow executa esses testes junto ao build/typecheck. A configuração e o build não substituem a conferência da página publicada.
+
+## Atualização publicada — 15/10/2026
+
+Código funcional `7f0d1f62f7ff87d27ae0666c3d45ff29da859276` integrado à main; PR #1 fechado com `merged=true` e `draft=false`. [CI da main aprovada](https://github.com/EznRB/fitflow-LP/actions/runs/38812423052/job/116688664444) e [publicação Git/Vercel aprovada](https://vercel.com/eznrbs-projects/fitflow-lp/eidF56EzbUQdcFF3kTVURoxk24v7). Cinco testes de destinos e build/typecheck passaram na cópia exata revisada; nenhum pacote novo foi instalado.
+
+O domínio canônico retornou HTTP 200; HTML, JavaScript, CSS, hero e captura real coincidiram por SHA-256 com o build revisado. A primeira comparação de HTML falhou por quebras de linha na extração Windows; o snapshot foi reconstruído a partir do blob original `HEAD:index.html`, sem modificar o conteúdo ou relaxar o comparador, e o gate passou. CTA canônico, privacidade do chat e aviso de checkout indisponível permanecem no bundle servido. Emulação e provas anteriores não certificam aparelho físico ou toda acessibilidade.
+
+Essa publicação contém a landing revisada e a validação de destinos. Alterações acadêmicas locais preparadas em paralelo para entrega em ZIP não fazem parte desse commit.
