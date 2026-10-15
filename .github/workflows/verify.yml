@@ -36,3 +36,5 @@ jobs:
 
       - name: Build and check TypeScript
         run: npm run build
+      - name: Verify application destinations
+        run: npm test

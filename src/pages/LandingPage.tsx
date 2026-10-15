@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight, ArrowUpRight, Dumbbell, Menu, X, Users, ClipboardList, CalendarCheck, CreditCard, Activity, BookOpen, Check, ChevronDown } from 'lucide-react';
 import '../landing.css';
+import { resolveAppLinks } from '../lib/app-links';
 
 // Preview local aponta ao aplicativo real local; publicação usa a origem configurada.
-const appUrl = (import.meta.env.VITE_APP_URL || (import.meta.env.DEV ? 'http://127.0.0.1:3107/' : 'https://fit-flow-indol.vercel.app/')).replace(/\/?$/, '/');
+const { appUrl, laboratoryUrl } = resolveAppLinks(import.meta.env.VITE_APP_URL
+  || (import.meta.env.DEV ? 'http://127.0.0.1:3107/' : undefined), import.meta.env.DEV);
 const features = [
   { icon: Users, number: '01', name: 'Alunos e planos', text: 'Cadastro, vínculo com plano e situação da matrícula em um só lugar.' },
   { icon: ClipboardList, number: '02', name: 'Fichas de treino', text: 'Exercícios, séries, repetições e orientações organizados por aluno.' },
@@ -76,7 +78,7 @@ export default function LandingPage() {
           </div>
         </div></section>
         <section id="fundamentos" className="lp-science-section"><div className="lp-container lp-section lp-science">
-          <div className="lp-section-heading"><p className="lp-eyebrow">03 / FUNDAMENTOS</p><h2>As contas aparecem.<br/><span>As fontes também.</span></h2><p>Uma estimativa precisa poder ser explicada. A área de nutrição apresenta equações publicadas, parâmetros editáveis e a distribuição dos macronutrientes.</p><a className="lp-text-link" href={appUrl+'laboratorio.html'}>Explorar nutrição e fundamentos <ArrowUpRight size={17}/></a></div>
+          <div className="lp-section-heading"><p className="lp-eyebrow">03 / FUNDAMENTOS</p><h2>As contas aparecem.<br/><span>As fontes também.</span></h2><p>Uma estimativa precisa poder ser explicada. A área de nutrição apresenta equações publicadas, parâmetros editáveis e a distribuição dos macronutrientes.</p><a className="lp-text-link" href={laboratoryUrl}>Explorar nutrição e fundamentos <ArrowUpRight size={17}/></a></div>
           <div className="lp-method-list"><article><span>01</span><div><h3>Equações identificadas</h3><p>Mifflin–St Jeor e Harris–Benedict revisada. Fórmula, unidades e hipóteses visíveis.</p></div></article><article><span>02</span><div><h3>Treino com contexto</h3><p>Divisão, execução e volume são discutidos com referências e limites de aplicação.</p></div></article><article><span>03</span><div><h3>Converse sobre o treino</h3><p>O chat de IA usa temas e fontes delimitados. Os cálculos da nutrição são feitos por código; os parâmetros da calculadora não são enviados automaticamente à IA.</p><p className="lp-chat-privacy">Com seu consentimento, as mensagens enviadas ao chat são compartilhadas com o provedor de IA. Evite incluir informações pessoais ou de saúde.</p></div></article><p className="lp-method-note">Conteúdo educativo para adultos saudáveis. Estimativas e explicações não substituem avaliação individual; fichas exigem revisão do instrutor.</p></div>
         </div></section>
         <section id="projeto" className="lp-project-section"><div className="lp-container lp-section">

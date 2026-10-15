@@ -57,3 +57,9 @@ vercel promote <url-do-deployment-verificado> --scope eznrbs-projects --yes --no
 ```
 
 `.vercelignore` exclui ambientes, arquivos locais, dependências, builds e documentação do upload. `.env.local` e `.vercel/` permanecem ignorados pelo Git. As alterações de desenvolvimento estão na branch `codex/landing-improvements` e devem ser revisadas por pull request antes de integrar `main`. O roteiro desta seção registra a publicação de 08/10; a revisão e as provas atuais estão em Publicação atual. Auditoria npm executada novamente em 12/10 retornou zero vulnerabilidades conhecidas, incluindo dependências de desenvolvimento.
+
+## Destinos do aplicativo — 14/10/2026
+
+`VITE_APP_URL` deve ser uma URL HTTPS absoluta, sem credenciais, query ou fragmento. Um prefixo de caminho é permitido; o laboratório é resolvido como `laboratorio.html` dentro dessa base. HTTP é aceito somente em loopback no desenvolvimento. Configuração inválida interrompe o build sem imprimir o valor configurado. Isso corrige a concatenação que podia transformar o caminho do laboratório em parte de uma query ou fragmento.
+
+`npm test` verifica cinco cenários de destino, incluindo configuração inválida e isolamento do padrão de produção; o workflow executa esses testes junto ao build/typecheck. A configuração e o build não substituem a conferência da página publicada.
