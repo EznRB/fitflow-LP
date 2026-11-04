@@ -51,10 +51,10 @@ export default function LandingPage() {
         <div className="lp-container lp-header-inner">
           <a className="lp-brand" href="#inicio" aria-label="FitFlow Caraguá, início"><Dumbbell size={27} strokeWidth={1.7} aria-hidden="true"/><span>FITFLOW<small>CARAGUÁ</small></span></a>
           <nav className={menuOpen ? 'lp-navigation is-open' : 'lp-navigation'} id="lp-mobile-navigation" aria-label="Navegação principal">
-            <a href="#produto" onClick={() => setMenuOpen(false)}>O produto</a><a href="#rotina" onClick={() => setMenuOpen(false)}>Como funciona</a><a href="#fundamentos" onClick={() => setMenuOpen(false)}>Fundamentos</a><a href="#projeto" onClick={() => setMenuOpen(false)}>O projeto</a>
-            <a href={appUrl} className="lp-mobile-access" onClick={() => setMenuOpen(false)}>Acessar FitFlow <ArrowUpRight size={17} aria-hidden="true"/></a>
+            <a href="#inicio" onClick={() => setMenuOpen(false)}>Início</a><a href="/sobre" onClick={() => setMenuOpen(false)}>Sobre nós</a><a href="/contato" onClick={() => setMenuOpen(false)}>Contato</a><a href="#produto" onClick={() => setMenuOpen(false)}>O produto</a><a href="#rotina" onClick={() => setMenuOpen(false)}>Como funciona</a><a href="#fundamentos" onClick={() => setMenuOpen(false)}>Fundamentos</a>
+            <a href={appUrl} className="lp-mobile-access" onClick={() => setMenuOpen(false)}>Login <ArrowUpRight size={17} aria-hidden="true"/></a>
           </nav>
-          <div className="lp-header-actions"><a href={appUrl} className="lp-button lp-button-small">Acessar FitFlow <ArrowUpRight size={16} aria-hidden="true"/></a><button ref={menuButtonRef} className="lp-menu-button" type="button" aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'} aria-expanded={menuOpen} aria-controls="lp-mobile-navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X size={22}/> : <Menu size={22}/>}</button></div>
+          <div className="lp-header-actions"><a href={appUrl} className="lp-button lp-button-small">Login <ArrowUpRight size={16} aria-hidden="true"/></a><button ref={menuButtonRef} className="lp-menu-button" type="button" aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'} aria-expanded={menuOpen} aria-controls="lp-mobile-navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X size={22}/> : <Menu size={22}/>}</button></div>
         </div>
       </header>
       <main id="conteudo" tabIndex={-1}>
@@ -88,7 +88,7 @@ export default function LandingPage() {
         </div></section>
         <section className="lp-container lp-final"><div><p className="lp-eyebrow">FITFLOW CARAGUÁ</p><h2>A próxima etapa<br/>começa na rotina.</h2></div><a href={appUrl} className="lp-button">Conhecer o FitFlow <ArrowUpRight size={18}/></a></section>
       </main>
-      <footer className="lp-footer lp-container"><a className="lp-brand" href="#inicio"><Dumbbell size={23} aria-hidden="true"/><span>FITFLOW<small>CARAGUÁ</small></span></a><div><strong>Enzo Marcelo Ribeiro Fermiano</strong><p>Análise e Desenvolvimento de Sistemas · 2026</p></div><span>Caraguatatuba, SP</span></footer>
+      <footer className="lp-footer lp-container"><a className="lp-brand" href="#inicio"><Dumbbell size={23} aria-hidden="true"/><span>FITFLOW<small>CARAGUÁ</small></span></a><div><strong>Enzo Marcelo Ribeiro Fermiano</strong><p>Análise e Desenvolvimento de Sistemas · 2026</p></div><a href="/contato" className="lp-text-link">Contato</a><span>Caraguatatuba, SP</span></footer>
     </div>
   );
 }
